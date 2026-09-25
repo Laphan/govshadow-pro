@@ -416,7 +416,7 @@
             if (driver) driver.playbackRate = pRate;
         }
 
-        // --- AI Lesson Generator (gemini-2.5-flash) ---
+        // --- AI Lesson Generator (gemini-1.5-flash) ---
         async function generateCustomLesson() {
             const apiKey = document.getElementById('geminiApiKey').value.trim();
             const topic = document.getElementById('customTopicInput').value.trim();
@@ -454,7 +454,8 @@
             };
 
             try {
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+                // Patched to use gemini-1.5-flash
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
                     method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload)
                 });
                 
@@ -540,7 +541,8 @@
             };
 
             try {
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`, {
+                // Patched to use gemini-2.0-flash for audio synthesis
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
                     method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload)
                 });
                 
