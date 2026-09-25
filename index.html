@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GovShadow Pro: Gemini Edition</title>
+    <title>GovShadow Pro: Gemini Edition (Full 14-Week Suite)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -11,14 +11,10 @@
         .serif-font { font-family: 'Playfair Display', serif; }
         .mono-font { font-family: 'JetBrains Mono', monospace; }
         
-        /* Gemini-inspired Gradients & Animations */
         .gemini-gradient {
             background: linear-gradient(135deg, #1A73E8 0%, #8AB4F8 50%, #D96570 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-        }
-        .gemini-bg-gradient {
-            background: linear-gradient(135deg, rgba(26, 115, 232, 0.1) 0%, rgba(138, 180, 248, 0.1) 50%, rgba(217, 101, 112, 0.1) 100%);
         }
         .gemini-border {
             border: 1px solid transparent;
@@ -32,11 +28,21 @@
         }
         .wave-bar { animation: waveform 0.8s ease-in-out infinite; transform-origin: bottom; }
         
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #09090b; }
         ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+
+        /* Loader Animation for AI Generation */
+        .loader {
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-top: 2px solid #8AB4F8;
+            border-radius: 50%;
+            width: 14px;
+            height: 14px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="min-h-screen flex flex-col md:flex-row overflow-hidden">
@@ -49,10 +55,10 @@
                 <span class="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Gemini Project</span>
             </div>
             <h1 class="text-2xl font-extrabold tracking-tight gemini-gradient">GovShadow Pro</h1>
-            <p class="text-xs text-zinc-500 mt-1">Executive Prosody Engine</p>
+            <p class="text-xs text-zinc-500 mt-1">14-Week Full Curriculum</p>
             
             <div class="mt-5">
-                <label class="text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Authentication</label>
+                <label class="text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-1 block">Authentication (Required for AI)</label>
                 <input type="password" id="geminiApiKey" placeholder="Paste Gemini API Key..." class="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-300 focus:outline-none focus:border-blue-500/50 transition shadow-inner">
             </div>
         </div>
@@ -60,24 +66,16 @@
         <div class="flex-grow overflow-y-auto p-4 space-y-1" id="curriculumNav">
             <!-- Nav buttons injected via JS -->
         </div>
-        
-        <div class="p-4 border-t border-zinc-800/60 bg-zinc-950">
-            <div class="text-[10px] text-zinc-500 text-center flex items-center justify-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                Local Browser Sandbox Active
-            </div>
-        </div>
     </aside>
 
     <!-- Main Workspace -->
     <main class="flex-grow h-screen overflow-y-auto bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-900/10 via-zinc-950 to-zinc-950 p-6 md:p-10 relative">
         
         <!-- Header Controls -->
-        <header class="flex flex-col xl:flex-row justify-between items-start xl:items-end gap-6 mb-8 border-b border-zinc-800/60 pb-6">
+        <header class="flex flex-col xl:flex-row justify-between items-start xl:items-end gap-6 mb-6 border-b border-zinc-800/60 pb-6">
             <div class="max-w-2xl">
                 <span id="weekContext" class="text-[10px] font-bold uppercase tracking-widest text-blue-400 bg-blue-500/10 px-2.5 py-1 rounded-full border border-blue-500/20">Context</span>
                 <h2 id="weekTitle" class="text-3xl font-extrabold text-white mt-3 tracking-tight">Title</h2>
-                <p id="weekCoach" class="text-sm text-zinc-400 mt-2 leading-relaxed">Directive</p>
             </div>
             
             <div class="flex flex-wrap items-center gap-3 w-full xl:w-auto shrink-0">
@@ -102,6 +100,14 @@
             </div>
         </header>
 
+        <!-- AI Generator Bar -->
+        <div class="bg-zinc-900/50 border border-zinc-800/60 rounded-2xl p-4 flex gap-3 mb-6 backdrop-blur-sm">
+            <input type="text" id="customTopicInput" placeholder="Enter a custom policy topic (e.g. 'Carbon Taxation Policy') to generate an AI lesson..." class="flex-grow bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2 text-xs text-zinc-200 focus:outline-none focus:border-blue-500">
+            <button id="btnGenerateAI" onclick="generateCustomLesson()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-5 py-2 rounded-xl text-xs transition flex items-center justify-center gap-2">
+                <span id="genBtnText">Generate AI Lesson</span>
+            </button>
+        </div>
+
         <!-- Main Content Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
@@ -116,7 +122,7 @@
                 </div>
 
                 <!-- Text Display -->
-                <div class="bg-zinc-900/50 border border-zinc-800/60 rounded-3xl p-8 relative flex-grow backdrop-blur-sm min-h-[200px]">
+                <div class="bg-zinc-900/50 border border-zinc-800/60 rounded-3xl p-8 relative flex-grow backdrop-blur-sm min-h-[160px]">
                     <div id="scriptDisplay" class="serif-font text-xl md:text-2xl leading-relaxed text-zinc-200 tracking-wide">
                         <!-- Script Injected Here -->
                     </div>
@@ -146,16 +152,12 @@
                             </button>
                         </div>
                         
-                        <!-- Dynamic Waveform Graphic -->
                         <div id="waveform" class="h-8 flex items-end justify-center gap-1.5 mt-6 opacity-0 transition-opacity duration-300">
-                            <!-- Bars injected via CSS -->
                             <div class="w-1.5 bg-blue-500 rounded-t-sm wave-bar h-full" style="animation-delay: 0.1s"></div>
                             <div class="w-1.5 bg-blue-400 rounded-t-sm wave-bar h-full" style="animation-delay: 0.2s"></div>
                             <div class="w-1.5 bg-purple-500 rounded-t-sm wave-bar h-full" style="animation-delay: 0.3s"></div>
                             <div class="w-1.5 bg-amber-500 rounded-t-sm wave-bar h-full" style="animation-delay: 0.4s"></div>
                             <div class="w-1.5 bg-blue-400 rounded-t-sm wave-bar h-full" style="animation-delay: 0.5s"></div>
-                            <div class="w-1.5 bg-purple-400 rounded-t-sm wave-bar h-full" style="animation-delay: 0.2s"></div>
-                            <div class="w-1.5 bg-blue-500 rounded-t-sm wave-bar h-full" style="animation-delay: 0.1s"></div>
                         </div>
                     </div>
                 </div>
@@ -164,69 +166,45 @@
             <!-- Right Column: Tools & Utilities -->
             <div class="lg:col-span-5 flex flex-col gap-6">
                 
-                <!-- 25-Min Stopwatch -->
+                <!-- Coaching Directives -->
+                <div class="bg-indigo-950/20 border border-indigo-500/20 rounded-3xl p-6 backdrop-blur-sm">
+                    <h3 class="text-xs font-bold text-indigo-300 uppercase tracking-wider mb-2">🇬🇧 Rhetoric Directive</h3>
+                    <p id="weekCoach" class="text-xs text-zinc-300 leading-relaxed italic">Directive</p>
+                </div>
+
+                <!-- IPA Targets -->
                 <div class="bg-zinc-900/50 border border-zinc-800/60 rounded-3xl p-6 backdrop-blur-sm">
+                    <h3 class="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-3">🔤 IPA Targets</h3>
+                    <div id="ipaDisplay" class="text-sm font-mono text-zinc-300 leading-relaxed bg-zinc-950 border border-zinc-800 p-4 rounded-xl"></div>
+                </div>
+                
+                <!-- 25-Min Stopwatch -->
+                <div class="bg-zinc-900/50 border border-zinc-800/60 rounded-3xl p-6 backdrop-blur-sm flex-grow">
                     <div class="flex justify-between items-start mb-4">
                         <div>
-                            <h3 class="text-xs font-bold text-zinc-400 uppercase tracking-wider flex items-center gap-2">
-                                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                Daily Routine Timer
-                            </h3>
+                            <h3 class="text-xs font-bold text-zinc-400 uppercase tracking-wider">⏱️ Routine Timer</h3>
                             <p class="text-[10px] text-zinc-500 mt-1">25-Minute Structured Workout</p>
                         </div>
                         <div id="timerDisplay" class="mono-font text-3xl font-bold text-white">25:00</div>
                     </div>
-                    
                     <div class="flex gap-2">
                         <button id="btnTimer" onclick="toggleTimer()" class="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white py-2.5 rounded-xl text-xs font-bold transition">Start Timer</button>
-                        <button onclick="resetTimer()" class="px-4 bg-zinc-950 border border-zinc-800 hover:border-zinc-700 text-zinc-400 py-2.5 rounded-xl text-xs font-bold transition">Reset</button>
+                        <button onclick="resetTimer()" class="px-4 bg-zinc-950 border border-zinc-800 text-zinc-400 py-2.5 rounded-xl text-xs font-bold transition">Reset</button>
                     </div>
                 </div>
-
-                <!-- Live Mic Audit -->
-                <div class="bg-zinc-900/50 border border-zinc-800/60 rounded-3xl p-6 backdrop-blur-sm">
-                    <h3 class="text-xs font-bold text-zinc-400 uppercase tracking-wider flex items-center gap-2 mb-1">
-                        <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                        Phase 4 Live Audit
-                    </h3>
-                    <p class="text-[10px] text-zinc-500 mb-4">Record unassisted delivery for rubric grading.</p>
-                    
-                    <div class="flex gap-2 mb-3">
-                        <button id="btnRecStart" onclick="startMic()" class="flex-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2">
-                            🎤 Record
-                        </button>
-                        <button id="btnRecStop" disabled onclick="stopMic()" class="flex-1 bg-red-950/40 border border-red-900/50 text-red-400 py-2.5 rounded-xl text-xs font-bold transition disabled:opacity-30">
-                            ⏹ Stop
-                        </button>
-                    </div>
-                    <audio id="audioPlayback" controls class="w-full h-8 hidden rounded"></audio>
-                </div>
-
-                <!-- IPA Breakdown Panel -->
-                <div class="bg-zinc-900/50 border border-zinc-800/60 rounded-3xl p-6 backdrop-blur-sm flex-grow">
-                    <h3 class="text-xs font-bold text-zinc-400 uppercase tracking-wider flex items-center gap-2 mb-3">
-                        <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path></svg>
-                        Phonetic IPA Targets
-                    </h3>
-                    <div id="ipaDisplay" class="text-sm font-mono text-zinc-300 leading-relaxed bg-zinc-950 border border-zinc-800 p-4 rounded-xl">
-                        <!-- IPA Targets -->
-                    </div>
-                </div>
-
             </div>
         </div>
     </main>
     
-    <!-- Hidden Audio Driver -->
     <audio id="geminiAudioDriver" onended="onPlaybackEnd()" class="hidden"></audio>
 
     <script>
-        // System Curriculum Database (Weeks 1-6 Pre-loaded for robust context)
+        // --- 14-Week Full Curriculum Database ---
         const DATABASE = [
             {
                 id: 1, title: "Week 1: The Schwa & Non-Rhoticity", context: "Data Science Context",
-                coach: "Target structural words 'sector' and 'indicators'. Drop terminal -r to schwa /ə/.",
-                ipa: "Sector /ˈsek.tə/<br>Indicators /ˈɪn.dɪ.keɪ.təz/<br>Administration /ədˌmɪn.ɪˈstreɪ.ʃən/",
+                coach: "Target structural words 'sector' and 'indicators'. Drop terminal -r to a relaxed neutral schwa /ə/.",
+                ipa: "Sector /ˈsek.tə/<br>Indicators /ˈɪn.dɪ.keɪ.təz/",
                 formal: "Effective  pub -lic ad-min-is- tra -tion / re- lies   heav -i-ly / on the  care -ful a- nal -y-sis of  da -ta.",
                 pure: "Effective public administration relies heavily on the careful analysis of data.",
                 casual: "Looking at the  sec -tor level ↗, / we  can't  just rely on gut feeling.",
@@ -234,9 +212,29 @@
                 vowel: "eh-eh-ih / uh-ih-ih-ay-uhn / ih-ay-eh-ee"
             },
             {
+                id: 2, title: "Week 2: Aspirated Plosives T/D", context: "Policy Foundations",
+                coach: "Produce a tiny puff of pressurized air on T and D. Ensure 'committee' and 'department' have sharp edges.",
+                ipa: "Statutory /ˈstætʃ.ʊ.tr̩.i/<br>Department /dɪˈpɑːt.mənt/",
+                formal: "The  stat -u-to-ry com- mit -tee /  met  to e- val -u-ate / the  quan -ti-ta-tive  da -ta.",
+                pure: "The statutory committee met to evaluate the quantitative data.",
+                casual: "The com- mit -tee's decision / isn't  set  in stone. // We need to  test  the figures.",
+                pureCasual: "The committee's decision isn't set in stone. We need to test the figures.",
+                vowel: "uh-ae-oo-uh-ee-uh-ih-ee / eh-oo-ih-ae-oo-ay / uh-oh-ih-uh-ih-ih-ay-uh"
+            },
+            {
+                id: 3, title: "Week 3: Long vs. Short Vowels", context: "Resource Governance",
+                coach: "Differentiate sharply between long vowels like 'resource' and short crisp vowels like 'strict fiscal'.",
+                ipa: "Resources /rɪˈzɔː.sɪz/<br>Fiscal /ˈfɪs.kəl/",
+                formal: "Sus- tain -a-ble man-age-ment of  nat -u-ral re- sour -ces / re- quires  a  strict  legal  frame -work.",
+                pure: "Sustainable management of natural resources requires a strict legal framework.",
+                casual: "If we don't  strict -ly enforce these limits / right  now ↗, / we  risk  losing the sector.",
+                pureCasual: "If we don't strictly enforce these limits right now, we risk losing the sector.",
+                vowel: "uh-ay-uh-uhl-ae-ih-uh-uh-ae-uh-uh-oh-ih / ih-ay-uh-ih-ee-uhl-ay-uh"
+            },
+            {
                 id: 4, title: "Week 4: Consonant-to-Vowel Linking", context: "Institutional Transparency",
                 coach: "Do not stop speaking between words. Smoothly slide the final consonant into the leading vowel without breaking airflow.",
-                ipa: "Analysis of /əˈnæl.ə.sɪ.səv/<br>Order of /ˈɔː.də.rəv/<br>End of /end.əv/",
+                ipa: "Analysis of /əˈnæl.ə.sɪ.səv/<br>Order of /ˈɔː.də.rəv/",
                 formal: "This is  an  a-nal-y-sis_of  /  ev-i-dence_and  /  o-pen_ad-min-is-tra-tion .",
                 pure: "This is an analysis of evidence and open administration.",
                 casual: "Honestly, / it's *an_ab-so-lute_ob*-sta-cle / if the *lack_of* clarity / *is_an* issue.",
@@ -245,8 +243,8 @@
             },
             {
                 id: 5, title: "Week 5: Parliamentary Rule of Three", context: "Policy Metrics",
-                coach: "Let vocal pitch climb step-by-step on items 1 and 2, then drop decisively on the final item to project unshakeable authority.",
-                ipa: "Transparency /trænˈspær.ən.si/<br>Accountability /əˌkaʊn.təˈbɪl.ə.ti/<br>Integrity /ɪnˈteɡ.rə.ti/",
+                coach: "Let vocal pitch climb step-by-step on items 1 and 2, then drop decisively on the final item to project authority.",
+                ipa: "Transparency /trænˈspær.ən.si/<br>Accountability /əˌkaʊn.təˈbɪl.ə.ti/",
                 formal: "Our  pri -ma-ry goals are / trans- par -en-cy ↗, / ac-count-a- bil -i-ty ↗, / and leg-is- la -tive in- teg -ri-ty ↘.",
                 pure: "Our primary goals are transparency, accountability, and legislative integrity.",
                 casual: "To get people on board, / we need to  lis -ten ↗, / col- lab -or-ate ↗, / and de- liv -er ↘.",
@@ -256,25 +254,104 @@
             {
                 id: 6, title: "Week 6: Parenthetical Pitch Dropping", context: "Economic Reform",
                 coach: "Drop fundamental pitch by 3-4 semitones and accelerate +15% inside qualifying commas. Spring back to baseline on the main verb.",
-                ipa: "Proposal /prəˈpəʊ.zəl/<br>Opposition /ˌɒp.əˈzɪʃ.ən/<br>Executed /ˈek.sɪ.kjuː.tɪd/",
+                ipa: "Proposal /prəˈpəʊ.zəl/<br>Opposition /ˌɒp.əˈzɪʃ.ən/",
                 formal: "The pro- po -sal / , *which was pro- duced  by the com- mit -tee* ↘ , / will  fail  without funding.",
                 pure: "The proposal, which was produced by the committee, will fail without funding.",
                 casual: "Honestly / , *and I think everyone in this room knows this* ↘ , / we cannot delay.",
                 pureCasual: "Honestly, and I think everyone in this room knows this, we cannot delay.",
                 vowel: "uh-uh-oh-uhl / ih-uh-uh-oo-ay-uh-uh-ih-ee / ih-ay-ih-ao-oo-ih"
+            },
+            {
+                id: 7, title: "Week 7: Auxiliaries Emphasis", context: "Accountability",
+                coach: "Place immense vocal weight directly onto your helper verbs like 'do', 'must', or 'will'.",
+                ipa: "Intend /ɪnˈtend/<br>Responsibility /rɪˌspɒn.səˈbɪl.ə.ti/",
+                formal: "We  do  in-tend to re- form  this sector. // The min-is-ter  will  ac- cept  re-spon-si- bil -i-ty.",
+                pure: "We do intend to reform this sector. The minister will accept responsibility.",
+                casual: "We  must  get this right. // If we fail now ↗, / it  will  damage our credibility.",
+                pureCasual: "We must get this right. If we fail now, it will damage our credibility.",
+                vowel: "ee-oo-ih-eh-oo-ih-ao-ih-eh-uh // uh-ih-ih-uh-ih-ae-eh-uh-on-ih-ih-ee"
+            },
+            {
+                id: 8, title: "Week 8: Authoritative Downward Inflection", context: "Statutory Obligations",
+                coach: "Step down firmly on the final syllable of the sentence to indicate finality and absolute command.",
+                ipa: "Debate /dɪˈbeɪt/<br>Allocated /ˈæl.ə.keɪ.tɪd/",
+                formal: "This  pol -i-cy / is  not  up for de- bate  ↘. // The de- ci -sion / is  fi -nal ↘.",
+                pure: "This policy is not up for debate. The decision is final.",
+                casual: "Look, / the budget is locked ↘. // We are moving forward today ↘.",
+                pureCasual: "Look, the budget is locked. We are moving forward today.",
+                vowel: "ih-oh-ih-ee / ih-on-uh-ao-uh-ay // uh-ee-ih-uhn / ih-ao-uhl"
+            },
+            {
+                id: 9, title: "Week 9: Polysyllabic Stamina", context: "Predictive Modeling",
+                coach: "Maintain a continuous, even rhythm across massive multi-syllable blocks without hesitating.",
+                ipa: "Constitutional /ˌkɒn.stɪˈtjuː.ʃən.əl/<br>Inefficiency /ˌɪn.ɪˈfɪʃ.ən.si/",
+                formal: "The con-sti- tu -tion-al framework / re-quires mul-ti- lat -er-al co-op-er- a -tion.",
+                pure: "The constitutional framework requires multilateral cooperation.",
+                casual: "We need better co-op-er- a -tion ↗ / across all departments / to cut the bu- reau -cra-cy.",
+                pureCasual: "We need better cooperation across all departments to cut the bureaucracy.",
+                vowel: "uh-on-ih-oo-uhn-uhl-ay-uh / ih-ay-uh-ʌ-ih-ae-uh-uhl-oh-on-uh-ay-uhn"
+            },
+            {
+                id: 10, title: "Week 10: Speed Variability Control", context: "Executive Briefings",
+                coach: "Slow your speaking rate down by half when presenting hard data and statistics to signal critical importance.",
+                ipa: "Inflation /ɪnˈfleɪ.ʃən/<br>Deliberate /dɪˈlɪb.ər.ət/",
+                formal: "In- fla -tion / rose by  four  per-cent // while un-em- ploy -ment / re- mained  / at  five  per-cent.",
+                pure: "Inflation rose by four percent while unemployment remained at five percent.",
+                casual: "Inflation is up four percent ↘. // We have to slow down our spending.",
+                pureCasual: "Inflation is up four percent. We have to slow down our spending.",
+                vowel: "ih-ay-uhn / oh-ay-ao-uh-eh // ao-uhn-eh-oi-uhnt / ih-ay"
+            },
+            {
+                id: 11, title: "Week 11: Emotional Resonance", context: "Crisis Management",
+                coach: "Bring down your average pitch range and utilize deep, resonant breathing to match human stakes.",
+                ipa: "Tragedy /ˈtrætʃ.ə.di/<br>Urgency /ˈɜː.dʒən.si/",
+                formal: "This is a  trag -e-dy / for the local com- mu -ni-ty. // We  must  act with  ur -gen-cy.",
+                pure: "This is a tragedy for the local community. We must act with urgency.",
+                casual: "People are hurting right now. // We need to be on the ground today.",
+                pureCasual: "People are hurting right now. We need to be on the ground today.",
+                vowel: "ih-ih-uh-ae-uh-ee / ao-uh-oh-uhl-uh-oo-ih-ee // ee-ʌ-ae-ih-uh-uhn-ee"
+            },
+            {
+                id: 12, title: "Week 12: Unscripted Shadow Performance", context: "Real-time Debates",
+                coach: "Capstone integration. Deliver with zero hesitation, forward projection, and absolutely crisp terminal consonants.",
+                ipa: "Prime Minister /praɪm ˈmɪn.ɪ.stər/<br>Nationwide /ˌneɪ.ʃənˈwaɪd/",
+                formal: "The  Prime  Min-is-ter / an- nounced  the new  gov -ern-ance code / live in the  House  today.",
+                pure: "The Prime Minister announced the new governance code live in the House today.",
+                casual: "The new rules are live as of today. // Every team needs to comply immediately.",
+                pureCasual: "The new rules are live as of today. Every team needs to comply immediately.",
+                vowel: "uh-ai-ih-ih-uh / uh-ao-uh-oo-uh-uh-ʌ-uhn-uh-oh / ai-ih-uh-ao-uh-ay"
+            },
+            {
+                id: 13, title: "Week 13: Interrogative Deflection", context: "Media Scrutiny & Q&A",
+                coach: "Acknowledge hostile premises quickly at a higher pitch, then drop into a lower, slower register to reframe the narrative.",
+                ipa: "Valid /ˈvæl.ɪd/<br>Institutional /ˌɪn.stɪˈtjuː.ʃən.əl/",
+                formal: "While that  is  a valid con- cern  ↗, / our  pri -ma-ry focus  must  re- main  on in-sti- tu -tion-al sta- bil -i-ty ↘.",
+                pure: "While that is a valid concern, our primary focus must remain on institutional stability.",
+                casual: "I hear what you're saying, / but we  re -al-ly need to look at the bigger picture here.",
+                pureCasual: "I hear what you're saying, but we really need to look at the bigger picture here.",
+                vowel: "ai-ae-ih-uh-ae-ih-uh-er // ou-ai-uh-ee-oh-uh-uh-ih-ay-on-ih-ih-oo-uh-uhl-uh-ih-ih-ee"
+            },
+            {
+                id: 14, title: "Week 14: The Capstone Keynote", context: "Executive Directives",
+                coach: "Mastery application. Utilize pauses (//), the Rule of Three, and downward finality simultaneously.",
+                ipa: "Critical /ˈkrɪt.ɪ.kəl/<br>Operational /ˌɒp.ərˈeɪ.ʃən.əl/",
+                formal: "We  stand  at a  crit -i-cal  junc -ture ↘. // The  pol -i-cies we im-ple-ment to- day  / will de- fine  our op-er- a -tion-al ca- pac -i-ty / for the next de- cade  ↘.",
+                pure: "We stand at a critical juncture. The policies we implement today will define our operational capacity for the next decade.",
+                casual: "This is the turning point, folks. // What we decide today sets the stage for the next ten years.",
+                pureCasual: "This is the turning point, folks. What we decide today sets the stage for the next ten years.",
+                vowel: "ee-ae-ae-uh-ih-ih-uhl-uhng-uh // uh-oh-ih-ee-ee-ih-uh-eh-uh-ay / ih-ih-ai-ou-o-uh-ay-uh-uhl-uh-ae-ih-ee / oh-uh-eh-eh-ay"
             }
         ];
 
-        let currentWeek = DATABASE[3]; // Default Week 6
+        let currentWeek = DATABASE[0]; 
         let currentTrack = 'formal';
         let audioSrc = null;
         let isPlaying = false;
         let pRate = 1.0;
 
-        // Init App
         window.onload = () => {
             buildNav();
-            loadWeek(6);
+            loadWeek(1);
         };
 
         function buildNav() {
@@ -290,7 +367,6 @@
         function loadWeek(id) {
             currentWeek = DATABASE.find(w => w.id === id);
             
-            // Highlight Nav
             DATABASE.forEach(w => {
                 const btn = document.getElementById(`navBtn-${w.id}`);
                 btn.className = w.id === id 
@@ -310,7 +386,6 @@
         function setTrack(track) {
             currentTrack = track;
             
-            // Tab styling
             ['formal', 'casual', 'vowel'].forEach(t => {
                 const btn = document.getElementById(`tab${t.charAt(0).toUpperCase() + t.slice(1)}`);
                 if (t === track) btn.className = "pb-3 text-xs font-bold border-b-2 border-blue-500 text-blue-400 transition";
@@ -341,8 +416,73 @@
             if (driver) driver.playbackRate = pRate;
         }
 
+        // --- AI Lesson Generator (gemini-2.5-flash) ---
+        async function generateCustomLesson() {
+            const apiKey = document.getElementById('geminiApiKey').value.trim();
+            const topic = document.getElementById('customTopicInput').value.trim();
+            const btn = document.getElementById('btnGenerateAI');
+            const btnText = document.getElementById('genBtnText');
+            
+            if (!apiKey) {
+                alert("Please paste your Gemini API Key in the sidebar to generate AI lessons.");
+                return;
+            }
+            if (!topic) {
+                alert("Please enter a custom policy topic.");
+                return;
+            }
+
+            btn.disabled = true;
+            btnText.innerHTML = '<div class="loader"></div> Generating...';
+
+            const systemPrompt = `You are the Lead Rhetoric Engine for GovShadow Pro. Generate a custom prosody lesson on the topic: "${topic}". 
+            Return ONLY a raw, minified JSON object (no markdown block, no backticks, no markdown formatting). Ensure it matches this exact schema:
+            {
+                "title": "Week X: Custom Theme",
+                "context": "Short context label",
+                "coach": "1 sentence rhetoric directive.",
+                "ipa": "Word1 /ipa/ <br> Word2 /ipa/",
+                "formal": "Marked script using / for pause, // for full stop, ↗ for rise, ↘ for fall.",
+                "pure": "Clean text of formal script",
+                "casual": "Marked conversational script",
+                "pureCasual": "Clean text of casual script",
+                "vowel": "Phonetic vowel mapping of formal script (e.g. uh-ay-ee)"
+            }`;
+
+            const payload = {
+                contents: [{ parts: [{ text: systemPrompt }] }]
+            };
+
+            try {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+                    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload)
+                });
+                
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                let rawText = data.candidates[0].content.parts[0].text;
+                
+                // Clean markdown if model includes it despite instructions
+                rawText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+                
+                const newLesson = JSON.parse(rawText);
+                newLesson.id = DATABASE.length + 1;
+                
+                DATABASE.push(newLesson);
+                buildNav();
+                loadWeek(newLesson.id);
+                document.getElementById('customTopicInput').value = '';
+                
+            } catch (err) {
+                console.error(err);
+                alert("AI Generation failed. Check your API Key or Network.");
+            } finally {
+                btn.disabled = false;
+                btnText.innerHTML = 'Generate AI Lesson';
+            }
+        }
+
         // --- Gemini TTS Integration Core ---
-        
         function pcmToWavBlob(base64PCM, sampleRate = 24000) {
             const raw = atob(base64PCM);
             const bytes = new Uint8Array(raw.length);
@@ -375,9 +515,8 @@
             if (currentTrack === 'casual') targetText = currentWeek.pureCasual;
             if (currentTrack === 'vowel') targetText = currentWeek.vowel;
 
-            // Browser Fallback logic
             if (voice === 'BROWSER' || !apiKey) {
-                if (!apiKey && voice !== 'BROWSER') alert("Please paste your Gemini API Key, or use Browser Fallback.");
+                if (!apiKey && voice !== 'BROWSER') alert("Please paste your Gemini API Key to use HD Voices, or use Browser Fallback.");
                 window.speechSynthesis.cancel();
                 const utter = new SpeechSynthesisUtterance(targetText);
                 utter.rate = pRate;
@@ -497,36 +636,6 @@
             const m = Math.floor(tSecs / 60).toString().padStart(2, '0');
             const s = (tSecs % 60).toString().padStart(2, '0');
             document.getElementById('timerDisplay').textContent = `${m}:${s}`;
-        }
-
-        // --- Mic Audit Utility ---
-        let mediaRec = null;
-        let audioChunks = [];
-
-        async function startMic() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                mediaRec = new MediaRecorder(stream);
-                audioChunks = [];
-                mediaRec.ondataavailable = e => audioChunks.push(e.data);
-                mediaRec.onstop = () => {
-                    const blob = new Blob(audioChunks, { type: 'audio/webm' });
-                    const player = document.getElementById('audioPlayback');
-                    player.src = URL.createObjectURL(blob);
-                    player.classList.remove('hidden');
-                };
-                mediaRec.start();
-                document.getElementById('btnRecStart').disabled = true;
-                document.getElementById('btnRecStop').disabled = false;
-            } catch (err) { alert("Mic Access Error: " + err.message); }
-        }
-
-        function stopMic() {
-            if (mediaRec && mediaRec.state !== "inactive") {
-                mediaRec.stop();
-                document.getElementById('btnRecStart').disabled = false;
-                document.getElementById('btnRecStop').disabled = true;
-            }
         }
     </script>
 </body>
